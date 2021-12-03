@@ -6,4 +6,4 @@ voyage = pd.read_csv(file)
 
 df = pd.DataFrame()
 
-print(voyage)
+print(voyage.info())
