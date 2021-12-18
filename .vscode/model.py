@@ -20,20 +20,25 @@ filevessel = 'vesseldata.csv'
 fileenv = 'envdata.csv'
 filefuel = 'fueldata.csv'
 
-voyage = pd.read_csv(file)
+vesseldf = pd.read_csv(filevessel)
+envdf = pd.read_csv(fileenv)
+fueldf = pd.read_csv(filefuel)
 
 
-Xvar = voyage.drop(columns=['SOX', 'NOX'], axis=1)
-yVar = (voyage[['SOX', 'NOX']])
+print(filevessel,fileenv,filefuel)
+
+
+# Xvar = voyage.drop(columns=['SOX', 'NOX'], axis=1)
+# yVar = (voyage[['SOX', 'NOX']])
 
 
 
 
 # sns.regplot(x=Xvar['Engine-RPM'], y=yVar['SOX'], data=voyage)
 
-Xvar.loc[:, 'DFT'] = 12.1 #from AIS data
+# Xvar.loc[:, 'DFT'] = 12.1 #from AIS data
 
 # plt.show()
-print(Xvar, yVar)
+# print(Xvar, yVar)
 
 # print(voyage.info())
