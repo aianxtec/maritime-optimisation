@@ -24,8 +24,16 @@ vesseldf = pd.read_csv(filevessel)
 envdf = pd.read_csv(fileenv)
 fueldf = pd.read_csv(filefuel)
 
+vesseldf["Date"] = pd.to_datetime(vesseldf["Date"])
+vesseldf["Time"] = pd.to_datetime(vesseldf["Time"])
 
-print(filevessel,fileenv,filefuel)
+envdf["Date"] = pd.to_datetime(envdf["Date"])
+envdf["Time"] = pd.to_datetime(envdf["Time"])
+
+fueldf["Date"] = pd.to_datetime(fueldf["Date"])
+fueldf["Time"] = pd.to_datetime(fueldf["Time"])
+
+print(f"{vesseldf.info()}\n {envdf.info()}\n{fueldf.info()}")
 
 
 # Xvar = voyage.drop(columns=['SOX', 'NOX'], axis=1)
