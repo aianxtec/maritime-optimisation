@@ -33,20 +33,31 @@ envdf["Time"] = pd.to_datetime(envdf["Time"])
 fueldf["Date"] = pd.to_datetime(fueldf["Date"])
 fueldf["Time"] = pd.to_datetime(fueldf["Time"])
 
-print(f"{vesseldf.info()}\n {envdf.info()}\n{fueldf.info()}")
+# print(f"{vesseldf.info()}\n {envdf.info()}\n{fueldf.info()}")
+
+CombinedMetrics = pd.DataFrame()
+CombinedMetrics = pd.concat([vesseldf, envdf, fueldf], axis=1) #joined all datasources into one DF for easier manipulation
+
+# Setting Output Variables 
+yVar = pd.DataFrame()
+yVar = (CombinedMetrics[['SOX', 'NOX', 'Viscosity_cst']])
+
+# Setting Input Variables 
+Xvar = CombinedMetrics.drop(columns=['SOX', 'NOX', 'Date', 'Time', 'Viscosity_cst'], axis=1)
 
 
-# Xvar = voyage.drop(columns=['SOX', 'NOX'], axis=1)
-# yVar = (voyage[['SOX', 'NOX']])
 
 
 
+
+# sns.distplot(Xvar)
+
+# plt.tight_layout()
+# plt.show()
 
 # sns.regplot(x=Xvar['Engine-RPM'], y=yVar['SOX'], data=voyage)
 
 # Xvar.loc[:, 'DFT'] = 12.1 #from AIS data
 
-# plt.show()
-# print(Xvar, yVar)
 
-# print(voyage.info())
+# print(Xvar, yVar)
