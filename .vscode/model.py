@@ -204,6 +204,45 @@ from tensorflow.keras.optimizers import Adam
 
 
 
+# having 13 neuron is based on the number of available features
+model = Sequential()
+model.add(Dense(13,activation='relu'))
+model.add(Dense(13,activation='relu'))
+model.add(Dense(13,activation='relu'))
+model.add(Dense(13,activation='relu'))
+model.add(Dense(1))
+model.compile(optimizer='Adam',loss='mse')
+
+model.fit(x=X_train,y=y_train,
+          validation_data=(X_test,y_test),
+          batch_size=128,epochs=400)
+model.summary()
+
+
+loss_df = pd.DataFrame(model.history.history)
+loss_df.plot(figsize=(12,8))
+
+y_pred = model.predict(X_test)
+from sklearn import metrics
+print('MAE:', metrics.mean_absolute_error(y_test, y_pred))  
+print('MSE:', metrics.mean_squared_error(y_test, y_pred))  
+print('RMSE:', np.sqrt(metrics.mean_squared_error(y_test, y_pred)))
+print('VarScore:',metrics.explained_variance_score(y_test,y_pred))
+# Visualizing Our predictions
+fig = plt.figure(figsize=(10,5))
+plt.scatter(y_test,y_pred)
+# Perfect predictions
+plt.plot(y_test,y_test,'r')
+plt.tight_layout()
+plt.show()
+
+
+# visualizing residuals
+fig = plt.figure(figsize=(10,5))
+residuals = (y_test-y_pred)
+sns.distplot(residuals)
+
+
 # plt.figure(figsize=(12,10))
 # cor = CombinedMetrics.corr()
 # sns.heatmap(cor, annot=True, cmap=plt.cm.Reds)
