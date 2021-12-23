@@ -151,7 +151,7 @@ plt.show()
 y_pred = regressor.predict(X_test)
 df = pd.DataFrame({'Actual': y_test, 'Predicted': y_pred})
 df1 = df.head(10)
-df1
+print(df1)
 # evaluate the performance of the algorithm (MAE - MSE - RMSE)
 from sklearn import metrics
 print('MAE:', metrics.mean_absolute_error(y_test, y_pred))  
@@ -160,12 +160,25 @@ print('RMSE:', np.sqrt(metrics.mean_squared_error(y_test, y_pred)))
 print('VarScore:',metrics.explained_variance_score(y_test,y_pred))
 
 
-# xgb = XGBRegressor(n_estimators=100)
-# xgb.fit(X_train, y_train)
 
-# X = pd.DataFrame(normData.data, columns=normData.feature_names)
 
-        
+    
+# Plotting the actual vs predicted values
+sns.lmplot(x='Actual', y='Predicted', data=df, fit_reg=False, size=7)
+    
+# Plotting the diagonal line
+line_coords = np.arange(df.min().min(), df.max().max())
+plt.plot(line_coords, line_coords,  # X and y points
+            color='darkorange', linestyle='--')
+plt.title('Actual vs. Predicted')
+plt.tight_layout()
+plt.show()
+
+
+
+
+
+  
 # plt.barh(boston.feature_names, xgb.feature_importances_)
 
 # X = normData.iloc[:,0:13].astype(int)  #independent columns
@@ -184,6 +197,12 @@ print('VarScore:',metrics.explained_variance_score(y_test,y_pred))
 
 
 
+# Creating a Neural Network Model
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Activation
+from tensorflow.keras.optimizers import Adam
+
+
 
 # plt.figure(figsize=(12,10))
 # cor = CombinedMetrics.corr()
@@ -191,17 +210,17 @@ print('VarScore:',metrics.explained_variance_score(y_test,y_pred))
 # plt.tight_layout()
 # plt.show()
 
-fig = plt.figure(figsize=(16,5))
-fig.add_subplot(2,2,1)
-sns.scatterplot(normData['Wave_height'], normData['Viscosity_cst'])
-fig.add_subplot(2,2,2)
-sns.scatterplot(normData['F.O_Temp_Celcius'],normData['Viscosity_cst'])
-fig.add_subplot(2,2,3)
-sns.scatterplot(normData['L.O.Main_Temp_Celcius'],normData['Viscosity_cst'])
-fig.add_subplot(2,2,4)
-sns.scatterplot(normData['L.O.Main_Pressure_kgm3'],normData['Viscosity_cst'])
-plt.tight_layout()
-plt.show()
+# fig = plt.figure(figsize=(16,5))
+# fig.add_subplot(2,2,1)
+# sns.scatterplot(normData['Wave_height'], normData['Viscosity_cst'])
+# fig.add_subplot(2,2,2)
+# sns.scatterplot(normData['F.O_Temp_Celcius'],normData['Viscosity_cst'])
+# fig.add_subplot(2,2,3)
+# sns.scatterplot(normData['L.O.Main_Temp_Celcius'],normData['Viscosity_cst'])
+# fig.add_subplot(2,2,4)
+# sns.scatterplot(normData['L.O.Main_Pressure_kgm3'],normData['Viscosity_cst'])
+# plt.tight_layout()
+# plt.show()
 
 # fig = plt.figure(figsize=(15,7))
 # fig.add_subplot(2,2,1)
