@@ -38,6 +38,10 @@ fueldf["Time"] = pd.to_datetime(fueldf["Time"])
 CombinedMetrics = pd.DataFrame()
 CombinedMetrics = pd.concat([vesseldf, envdf, fueldf], axis=1) #joined all datasources into one DF for easier manipulation
 
+
+
+
+
 # Setting Output Variables 
 yVar = pd.DataFrame()
 yVar = (CombinedMetrics[['SOX', 'NOX', 'Viscosity_cst']])
@@ -45,13 +49,17 @@ yVar = (CombinedMetrics[['SOX', 'NOX', 'Viscosity_cst']])
 # Setting Input Variables 
 Xvar = CombinedMetrics.drop(columns=['SOX', 'NOX', 'Date', 'Time', 'Viscosity_cst'], axis=1)
 
+# print(Xvar, yVar)
 
+XandY = pd.concat([Xvar, yVar], axis=1)
 
 # define min max scaler
 scaler = MinMaxScaler()
 # transform data
-scaled = scaler.fit_transform(Xvar)
-print(scaled)
+normData = pd.DataFrame(scaler.fit_transform(XandY), index=XandY.index, columns=XandY.columns)
+# scaleddata = pd.DataFrame(scaled)
+print(normData)
+
 
 
 # fig = plt.figure(figsize=(10,7))
