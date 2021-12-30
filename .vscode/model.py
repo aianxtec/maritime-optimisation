@@ -178,26 +178,31 @@ plt.show()
 
 
 
+
+# ###############################################################################
+# F    E    A    T    U    R    E   •••••  S    E    L   L   E   C   T   I   O   N
+
   
 # plt.barh(boston.feature_names, xgb.feature_importances_)
 
-# X = normData.iloc[:,0:13].astype(int)  #independent columns
-# y = normData.iloc[:,-1].astype(int)   #viscosity
-# from sklearn.ensemble import ExtraTreesClassifier
-# import matplotlib.pyplot as plt
-# model = ExtraTreesClassifier()
-# model.fit(X,y)
-# print(model.feature_importances_) #use inbuilt class feature_importances of tree based classifiers
+X = normData.iloc[:,0:13].astype(int)  #independent columns
+y = normData.iloc[:,-1].astype(int)   #viscosity
+from sklearn.ensemble import ExtraTreesClassifier
+import matplotlib.pyplot as plt
+model = ExtraTreesClassifier()
+model.fit(X,y)
+print(model.feature_importances_) #use inbuilt class feature_importances of tree based classifiers
 
-# feat_importances = pd.Series(model.feature_importances_, index=X.columns)
-# feat_importances.nlargest(5).plot(kind='barh')
-# plt.title('Feature Importance')
-# plt.tight_layout()
-# plt.show()
+feat_importances = pd.Series(model.feature_importances_, index=X.columns)
+feat_importances.nlargest(5).plot(kind='barh')
+plt.title('Feature Importance')
+plt.tight_layout()
+plt.show()
 
 
+# #####################################
+# N  E  U  R  A  L - N  E  T  W  O  R  K 
 
-# Creating a Neural Network Model
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Activation
 from tensorflow.keras.optimizers import Adam
@@ -282,8 +287,4 @@ plt.show()
 # plt.tight_layout()
 # plt.show()
 
-
-
-# ###############################################################################
-# F    E    A    T    U    R    E   •••••  S    E    L   L   E   C   T   I   O   N
 
