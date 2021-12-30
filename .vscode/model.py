@@ -237,11 +237,20 @@ plt.tight_layout()
 plt.show()
 
 
-# visualizing residuals
-fig = plt.figure(figsize=(10,5))
-residuals = (y_test-y_pred)
-sns.distplot(residuals)
 
+
+
+
+
+
+# # visualizing residuals
+# fig = plt.figure(figsize=(10,5))
+# x_test = np.reshape(X_test(-1, 1))
+
+# residuals = (y_test- y_pred)
+# sns.distplot(residuals)
+# plt.tight_layout()
+# plt.show()
 
 # plt.figure(figsize=(12,10))
 # cor = CombinedMetrics.corr()
