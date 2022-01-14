@@ -8,17 +8,10 @@ from statsmodels.stats.outliers_influence import variance_inflation_factor
 from sklearn.preprocessing import MinMaxScaler
 from sklearn import metrics
 from sklearn.linear_model import LinearRegression
-from enum import auto
-from matplotlib.colors import Colormap
 from seaborn.utils import ci
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import power_transform
 from sklearn.preprocessing import PowerTransformer
-
-from sklearn.metrics import confusion_matrix
-from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
-import matplotlib
 import pandas as pd
 import numpy as np
 import seaborn as sns
@@ -165,7 +158,7 @@ feat_importances.nlargest(6).plot(kind='barh')
 plt.title('Feature Importance')
 plt.tight_layout()
 plt.show()
-
+print(modelrf_reg.score(X,y))
 
 # # #############################################################
 # # M  U  L  T  I  P  L  E   •••••  R  E  G  R  E  S  S  I  O  N
@@ -202,6 +195,8 @@ print('MAE:', metrics.mean_absolute_error(y_test, y_pred))
 print('MSE:', metrics.mean_squared_error(y_test, y_pred))
 print('RMSE:', np.sqrt(metrics.mean_squared_error(y_test, y_pred)))
 print('VarScore:', metrics.explained_variance_score(y_test, y_pred))
+print('R2:', metrics.r2_score(y_test, y_pred))
+
 
 
 # Plotting the actual vs predicted values
@@ -231,7 +226,7 @@ model.compile(optimizer='Adam', loss='mse')
 
 model.fit(x=X_train, y=y_train,
           validation_data=(X_test, y_test),
-          batch_size=128, epochs=400)
+          batch_size=3, epochs=72)
 model.summary()
 
 
@@ -250,19 +245,38 @@ plt.plot(y_test, y_test, 'r')
 plt.tight_layout()
 plt.show()
 
+#creating dictionary for hyperparameter values to be searched
 
-# Serializing the model
-with open('saved_model.pkl', 'wb') as f:
-    pickle.dump(model, f)
+    
 
-# De-Serializing the model
-with open('saved_model.pkl', 'rb') as f:
-    clf_loaded = pickle.load(f)
+    
+
+# from sklearn.model_selection import GridSearchCV
+# batch_size= [20,50,80,110]
+# epochs= [5,10,15]
+# parameterGrid = dict(batch_size=batch_size,epochs=epochs)
+# #creating a GridSearchCV object
+# GSCV = GridSearchCV(estimator=model, 
+#                     param_grid=parameterGrid,
+#                     n_jobs=-1,
+#                     scoring="neg_mean_squared_error",
+#                     cv = 3)
+
+# print(GSCV.fit(X_train, y_train))
 
 
-# Check the pickle file by inputing the variables
-model = pickle.load(open('saved_model.pkl', 'rb'))
-print(model.predict([[55, 18, 0, 1, 1, 55, 18, 0, 1, 1, 3, 4,12]]))
+# # Serializing the model
+# with open('saved_model.pkl', 'wb') as f:
+#     pickle.dump(model, f)
+
+# # De-Serializing the model
+# with open('saved_model.pkl', 'rb') as f:
+#     clf_loaded = pickle.load(f)
+
+
+# # Check the pickle file by inputing the variables
+# model = pickle.load(open('saved_model.pkl', 'rb'))
+# print(model.predict([[55, 18, 0, 1, 1, 55, 18, 0, 1, 1, 3, 4,12]]))
 
 
 # from sklearn.decomposition import PCA
