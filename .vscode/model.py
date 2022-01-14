@@ -133,6 +133,8 @@ s_scaler = StandardScaler()
 X_train = s_scaler.fit_transform(X_train.astype(np.float))
 X_test = s_scaler.transform(X_test.astype(np.float))
 
+print (X_train.shape, X_test.shape)
+print (y_train.shape, y_test.shape)
 
 # sns.set_theme()
 # sns.regplot(
@@ -265,17 +267,17 @@ plt.show()
 # print(GSCV.fit(X_train, y_train))
 
 
-# # Serializing the model
-# with open('saved_model.pkl', 'wb') as f:
-#     pickle.dump(model, f)
+# Serializing the model
+with open('saved_model.pkl', 'wb') as f:
+    pickle.dump(model, f)
 
-# # De-Serializing the model
-# with open('saved_model.pkl', 'rb') as f:
-#     clf_loaded = pickle.load(f)
+# De-Serializing the model
+with open('saved_model.pkl', 'rb') as f:
+    clf_loaded = pickle.load(f)
 
 
-# # Check the pickle file by inputing the variables
-# model = pickle.load(open('saved_model.pkl', 'rb'))
+# Check the pickle file by inputing the variables
+model = pickle.load(open('saved_model.pkl', 'rb'))
 # print(model.predict([[55, 18, 0, 1, 1, 55, 18, 0, 1, 1, 3, 4,12]]))
 
 
