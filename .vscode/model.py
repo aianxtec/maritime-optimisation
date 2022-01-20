@@ -143,27 +143,54 @@ print (y_train.shape, y_test.shape)
 # plt.tight_layout()
 # plt.show()
 
-# # ###############################################################################
-# # F    E    A    T    U    R    E   •••••  S    E    L   L   E   C   T   I   O   N
+# # # ###############################################################################
+# # # F    E    A    T    U    R    E   •••••  S    E    L   L   E   C   T   I   O   N
+
+def feature_selection(X, y):
+    # X = X_train  # independent columns
+    # y = y_train  # viscosity
+    modelrf_reg = RandomForestRegressor(
+        n_estimators=500, random_state=101, criterion='mse', max_depth=50, max_features=2, )
+    modelrf_reg.fit(X, y)
+    # print(modelrf_reg.feature_importances_)
+
+    feat_importances = pd.Series(
+        modelrf_reg.feature_importances_, index=Xfeat.columns)
+    feat_importances.nlargest(6).plot(kind='barh')
+    plt.title('Feature Importance')
+    plt.tight_layout()
+    plt.show()
+    print(modelrf_reg.score(X,y))
 
 
-X = X_train  # independent columns
-y = y_train  # viscosity
-modelrf_reg = RandomForestRegressor(
-    n_estimators=500, random_state=101, criterion='mse', max_depth=50, max_features=2, )
-modelrf_reg.fit(X, y)
-# print(modelrf_reg.feature_importances_)
+    sorted_columns = [x for _,x in sorted(zip(modelrf_reg.feature_importances_,Xfeat.columns))]
+    sorted_importance = sorted(modelrf_reg.feature_importances_)
+    sorted_columns = sorted_columns[-6:]
+    sorted_importance = sorted_importance[-6:]
+    # print(sorted_columns, sorted_importance)
+    return sorted_columns
 
-feat_importances = pd.Series(
-    modelrf_reg.feature_importances_, index=Xfeat.columns)
-feat_importances.nlargest(6).plot(kind='barh')
-plt.title('Feature Importance')
-plt.tight_layout()
-plt.show()
-print(modelrf_reg.score(X,y))
 
-# # #############################################################
-# # M  U  L  T  I  P  L  E   •••••  R  E  G  R  E  S  S  I  O  N
+selected_features = feature_selection(X_train, y_train)
+
+Xfeat = Xfeat[selected_features]
+
+
+X_train, X_test, y_train, y_test = train_test_split(
+    Xfeat, ytarget, test_size=0.33, random_state=101)
+
+# standardization scaler - fit&transform on train, fit only on test
+
+s_scaler = StandardScaler()
+X_train = s_scaler.fit_transform(X_train.astype(np.float))
+X_test = s_scaler.transform(X_test.astype(np.float))
+
+print (X_train.shape, X_test.shape)
+print (y_train.shape, y_test.shape)
+
+
+# # # #############################################################
+# # # M  U  L  T  I  P  L  E   •••••  R  E  G  R  E  S  S  I  O  N
 
 
 regressor = LinearRegression()
@@ -219,16 +246,16 @@ plt.show()
 
 # having 13 neuron is based on the number of available features
 model = Sequential()
-model.add(Dense(13, activation='relu'))
-model.add(Dense(13, activation='relu'))
-model.add(Dense(13, activation='relu'))
-model.add(Dense(13, activation='relu'))
+model.add(Dense(6, activation='relu'))
+model.add(Dense(6, activation='relu'))
+model.add(Dense(6, activation='relu'))
+model.add(Dense(6, activation='relu'))
 model.add(Dense(1))
 model.compile(optimizer='Adam', loss='mse')
 
 model.fit(x=X_train, y=y_train,
           validation_data=(X_test, y_test),
-          batch_size=3, epochs=72)
+          batch_size=7, epochs=100)
 model.summary()
 
 
@@ -247,24 +274,24 @@ plt.plot(y_test, y_test, 'r')
 plt.tight_layout()
 plt.show()
 
-#creating dictionary for hyperparameter values to be searched
+# #creating dictionary for hyperparameter values to be searched
 
     
 
     
 
-# from sklearn.model_selection import GridSearchCV
-# batch_size= [20,50,80,110]
-# epochs= [5,10,15]
-# parameterGrid = dict(batch_size=batch_size,epochs=epochs)
-# #creating a GridSearchCV object
-# GSCV = GridSearchCV(estimator=model, 
-#                     param_grid=parameterGrid,
-#                     n_jobs=-1,
-#                     scoring="neg_mean_squared_error",
-#                     cv = 3)
+# # from sklearn.model_selection import GridSearchCV
+# # batch_size= [20,50,80,110]
+# # epochs= [5,10,15]
+# # parameterGrid = dict(batch_size=batch_size,epochs=epochs)
+# # #creating a GridSearchCV object
+# # GSCV = GridSearchCV(estimator=model, 
+# #                     param_grid=parameterGrid,
+# #                     n_jobs=-1,
+# #                     scoring="neg_mean_squared_error",
+# #                     cv = 3)
 
-# print(GSCV.fit(X_train, y_train))
+# # print(GSCV.fit(X_train, y_train))
 
 
 # Serializing the model
@@ -278,7 +305,7 @@ with open('saved_model.pkl', 'rb') as f:
 
 # Check the pickle file by inputing the variables
 model = pickle.load(open('saved_model.pkl', 'rb'))
-# print(model.predict([[55, 18, 0, 1, 1, 55, 18, 0, 1, 1, 3, 4,12]]))
+print(model.predict([[47,10,1.15,7,90,200]]))
 
 
 # from sklearn.decomposition import PCA
@@ -290,7 +317,6 @@ model = pickle.load(open('saved_model.pkl', 'rb'))
 
 # # ###########################################
 # # V  I  S  U  A  L  I  S  A  T  I  O   N  S
-
 
 # # visualizing residuals
 # fig = plt.figure(figsize=(10,5))
